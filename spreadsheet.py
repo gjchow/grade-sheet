@@ -50,58 +50,79 @@ def spreadsheet(data):
     values.extend(title(name))
 
     for entry in data:
-
-        if len(entry) == 1:
-            if len(values) >= 3:
-                start = f'{num_to_col((courses * 4) + 2)}3'
-                end = f'{num_to_col((courses * 4) + 3)}{entries + 2}'
-                values[2].extend(add_result(start, end))
-                body = {
-                    'values': values
-                }
-                repeat_body = {
-                    'values': repeated_values
-                }
-                request = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id,
-                                                                 range=f"{start_col}1:100",
-                                                                 valueInputOption='USER_ENTERED', body=body)
-                result = request.execute()
-                courses += 1
-                if len(repeated_values) > 0:
-                    repeated_values.insert(0, [name.upper()])
+        if not '' in entry:
+            if len(entry) == 1:
+                if len(values) >= 3:
+                    start = f'{num_to_col((courses * 4) + 2)}3'
+                    end = f'{num_to_col((courses * 4) + 3)}{entries + 2}'
+                    values[2].extend(add_result(start, end))
+                    body = {
+                        'values': values
+                    }
+                    repeat_body = {
+                        'values': repeated_values
+                    }
                     request = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id,
-                                                                     range=f"Repeated!{repeat_col}1:100",
-                                                                     valueInputOption='USER_ENTERED', body=repeat_body)
-                    result = request.execute()
-                    repeat_courses += 1
+                                                                     range=f"{start_col}1:100",
+                                                                     valueInputOption='USER_ENTERED', body=body)
+                    # result = request.execute()
+                    courses += 1
+                    if len(repeated_values) > 0:
+                        repeated_values.insert(0, [name.upper()])
+                        request = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id,
+                                                                         range=f"Repeated!{repeat_col}1:100",
+                                                                         valueInputOption='USER_ENTERED', body=repeat_body)
+                        # result = request.execute()
+                        repeat_courses += 1
 
-                # Resetting everything
-                entries = 0
-                repeat_entries = 0
-                start_col = num_to_col((courses * 4) + 1)
-                repeat_col = num_to_col((repeat_courses * 2) + 1)
-                values = []
-                repeated_values = []
-                name = entry[0]
-                values.extend(title(name))
+                    # Resetting everything
+                    entries = 0
+                    repeat_entries = 0
+                    start_col = num_to_col((courses * 4) + 1)
+                    repeat_col = num_to_col((repeat_courses * 2) + 1)
+                    values = []
+                    repeated_values = []
+                    name = entry[0]
+                    values.extend(title(name))
 
-        elif len(entry) == 2:
-            values.append(single_entry(entry[0], int(entry[1])))
-            entries += 1
+            elif len(entry) == 2:
+                values.append(single_entry(entry[0], int(entry[1])))
+                entries += 1
 
-        elif len(entry) == 3:
-            weights = entry[1].split()
-            values.extend(weighted_repeated(entry[0], int(entry[2]), weights, entries, courses * 4))
-            entries += int(entry[2])
+            elif len(entry) == 3:
+                weights = entry[1].split()
+                values.extend(weighted_repeated(entry[0], int(entry[2]), weights, entries, courses * 4))
+                entries += int(entry[2])
 
-        elif len(entry) == 4:
-            enter = repeated_entry(entry[0], int(entry[1]), int(entry[2]), int(entry[3]), repeat_entries, repeat_courses * 2)
-            entries += 1
-            repeat_entries += int(entry[2])
-            values.append(enter[0])
-            for entry_name in enter[1]:
-                repeated_values.append([entry_name])
+            elif len(entry) == 4:
+                enter = repeated_entry(entry[0], int(entry[1]), int(entry[2]), int(entry[3]), repeat_entries, repeat_courses * 2)
+                entries += 1
+                repeat_entries += int(entry[2])
+                values.append(enter[0])
+                for entry_name in enter[1]:
+                    repeated_values.append([entry_name])
 
+    if len(values) >= 3:
+        start = f'{num_to_col((courses * 4) + 2)}3'
+        end = f'{num_to_col((courses * 4) + 3)}{entries + 2}'
+        values[2].extend(add_result(start, end))
+        body = {
+            'values': values
+        }
+        repeat_body = {
+            'values': repeated_values
+        }
+        request = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id,
+                                                         range=f"{start_col}1:100",
+                                                         valueInputOption='USER_ENTERED', body=body)
+        # result = request.execute()
+        courses += 1
+        if len(repeated_values) > 0:
+            repeated_values.insert(0, [name.upper()])
+            request = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id,
+                                                             range=f"Repeated!{repeat_col}1:100",
+                                                             valueInputOption='USER_ENTERED', body=repeat_body)
+            # result = request.execute()
     print("Done")
 
 
