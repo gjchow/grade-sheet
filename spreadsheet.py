@@ -10,11 +10,8 @@ from google.oauth2.credentials import Credentials
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-# The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
-SAMPLE_RANGE_NAME = 'Class Data!A2:E'
 
-def main():
+def spreadsheet(data, courses):
     """Shows basic usage of the Sheets API.
     Prints values from a sample spreadsheet.
     """
@@ -42,27 +39,29 @@ def main():
 
     spreadsheet_id = ''
     entries = 0
-    courses = 0
     repeat_entries = 0
     repeat_courses = 0
     start_col = num_to_col((courses*4)+1)
     repeat_col = num_to_col((repeat_courses*2)+1)
     values = []
     repeated_values = []
-    name = 'Test101'
+    name = data.pop(0)[0]
     values.extend(title(name))
-    values.extend(weighted_repeated('Test', 3, [25, 20], entries, courses*4))
-    entries += 3
-    values.append(single_entry('Homework', 40))
-    entries += 1
-    entry = repeated_entry('Quiz', 15, 4, 3, repeat_entries, repeat_courses*2)
-    entries += 1
-    repeat_entries += 4
-    values.extend(weighted_repeated('TermTest', 2, [25, 20], entries, courses * 4))
-    entries += 2
-    values.append(entry[0])
-    for entry_name in entry[1]:
-        repeated_values.append([entry_name])
+    for entry in data:
+        if len(entry) == 2:
+            values.append(single_entry(entry[0], int(entry[1])))
+            entries += 1
+        elif len(entry) == 3:
+            weights = entry[1].split()
+            values.extend(weighted_repeated(entry[0], int(entry[2]), weights, entries, courses * 4))
+            entries += int(entry[2])
+        elif len(entry) == 4:
+            enter = repeated_entry(entry[0], int(entry[1]), int(entry[2]), int(entry[3]), repeat_entries, repeat_courses * 2)
+            entries += 1
+            repeat_entries += int(entry[2])
+            values.append(enter[0])
+            for entry_name in enter[1]:
+                repeated_values.append([entry_name])
 
 
     if len(values) > 3:
@@ -175,7 +174,3 @@ def num_to_col(num: int):
         return chr(num + 64)
     else:
         return num_to_col(num // 26) + num_to_col(num % 26)
-
-
-if __name__ == '__main__':
-    main()
