@@ -11,7 +11,7 @@ def home():
     if request.method == 'POST':
         req = request.form
         values = []
-        num = 'e'
+        num = 'A'
         add = []
         for item in req:
             if item[-1] == num:

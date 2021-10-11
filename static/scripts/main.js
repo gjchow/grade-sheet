@@ -77,6 +77,10 @@ $(document).ready(function() {
             course.attr('id', 'course'+courses);
             course.attr('hidden', false);
 
+            temp = course.children('.course-name');
+            temp.attr('name', 'course-name'+String.fromCharCode(courses + 64));
+            temp.attr('disabled', false);
+
             temp = course.children('.single-button');
             temp.attr('id', 'single-button'+courses);
 
