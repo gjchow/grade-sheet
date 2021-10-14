@@ -65,14 +65,14 @@ def spreadsheet(data):
                     request = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id,
                                                                      range=f"{start_col}1:100",
                                                                      valueInputOption='USER_ENTERED', body=body)
-                    # result = request.execute()
+                    result = request.execute()
                     courses += 1
                     if len(repeated_values) > 0:
                         repeated_values.insert(0, [name.upper()])
                         request = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id,
                                                                          range=f"Repeated!{repeat_col}1:100",
                                                                          valueInputOption='USER_ENTERED', body=repeat_body)
-                        # result = request.execute()
+                        result = request.execute()
                         repeat_courses += 1
 
                     # Resetting everything
@@ -115,14 +115,14 @@ def spreadsheet(data):
         request = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id,
                                                          range=f"{start_col}1:100",
                                                          valueInputOption='USER_ENTERED', body=body)
-        # result = request.execute()
+        result = request.execute()
         courses += 1
         if len(repeated_values) > 0:
             repeated_values.insert(0, [name.upper()])
             request = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id,
                                                              range=f"Repeated!{repeat_col}1:100",
                                                              valueInputOption='USER_ENTERED', body=repeat_body)
-            # result = request.execute()
+            result = request.execute()
     print("Done")
 
 
@@ -179,8 +179,8 @@ def single_entry(name: str, percentage: int) -> List[str]:
 def repeated_entry(name: str, percentage: int, num: int, taken: int, row: int, num_col: int) -> List[List[str]]:
     col = num_to_col(num_col + 2)
     start = f'{col}{row + 2}'
-    end = f'{col}{row + 2 + num}'
-    formula = f"=SUM(SORTN('Repeated'!{start}:{end},{taken},0))/{taken}"
+    end = f'{col}{row + 2 + num - 1}'
+    formula = f"=SUM(SORTN('Repeated'!{start}:{end},{taken},0, Repeated'!{start}:{end}, FALSE))/{taken}"
     names = []
     for i in range(num):
         names.append(f'{name}{i + 1}')
