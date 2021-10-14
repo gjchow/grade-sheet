@@ -52,12 +52,13 @@ $(document).ready(function() {
         count = this.id[this.id.length -1]
         entry = $("#weighted").clone(true);
         entry.attr('hidden', false);
+
         temp = entry.children('.item-name');
         temp.attr('name', 'item-name'+num);
         temp.attr('disabled', false);
 
-        temp = entry.children('.percentage');
-        temp.attr('name', 'percentage'+num);
+        temp = entry.children('.weighted-percentage');
+        temp.attr('name', 'weighted-percentage'+num);
         temp.attr('disabled', false);
 
         temp = entry.children('.num-items');

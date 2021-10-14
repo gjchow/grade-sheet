@@ -4,28 +4,28 @@
     <meta charset="UTF-8">
     <title>GradeSheet</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
     <form action="" method="post" id="grades" autocomplete="off">
+        <div id="single" hidden>
+            <input name="item-name" class="item-name" placeholder="Entry Name" disabled>
+            <input name="percentage" class="percentage" placeholder="Percentage of Grade" disabled>
+        </div>
+        <div id="repeated" hidden>
+            <input name="item-name" class="item-name" placeholder="Entry Name" disabled>
+            <input name="percentage" class="percentage" placeholder="Percentage of Grade" disabled>
+            <input name="num-items" class="num-items" placeholder="Number of Entries" disabled>
+            <input name="counted-items" class="counted-items" placeholder="Counted Entries" disabled>
+        </div>
+        <div id="weighted" hidden>
+            <input name="item-name" class="item-name" placeholder="Entry Name" disabled>
+            <input name="weighted-percentage" class="weighted-percentage" placeholder="Weighted Percentages" disabled>
+            <input name="num-items" class="num-items" placeholder="Number of Entries" disabled>
+        </div>
         <div id="course" hidden>
             <input name="course-name" class="course-name" placeholder="Course Name" required disabled><br>
-            <div id="single" hidden>
-                <input name="item-name" class="item-name" placeholder="Entry Name" disabled>
-                <input name="percentage" class="percentage" placeholder="Percentage of Grade" disabled>
-            </div>
-            <div id="repeated" hidden>
-                <input name="item-name" class="item-name" placeholder="Entry Name" disabled>
-                <input name="percentage" class="percentage" placeholder="Percentage of Grade" disabled>
-                <input name="num-items" class="num-items" placeholder="Number of Entries" disabled>
-                <input name="counted-items" class="counted-items" placeholder="Counted Entries" disabled>
-            </div>
-            <div id="weighted" hidden>
-                <input name="item-name" class="item-name" placeholder="Entry Name" disabled>
-                <input name="percentage" class="percentage" placeholder="Weighted Percentages" disabled>
-                <input name="num-items" class="num-items" placeholder="Number of Entries" disabled>
-            </div>
+            <div></div>
             <button type="button" class="single-button" id="single-button">Single</button>
             <button type="button" class="repeated-button" id="repeated-button">Repeated</button>
             <button type="button" class="weighted-button" id="weighted-button">Weighted</button>
@@ -34,6 +34,7 @@
     <button type="button" class="course-button" id="course-button">New Course</button>
     <button type="submit" class="submit" id="submit" form="grades">Submit</button>
 
+    <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
     <!--For bootstrap-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
